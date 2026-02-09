@@ -1,7 +1,7 @@
 {
     "name": "myapp",
     "productName": "My Application",
-    "version": "1.0.0",
+    "version": "1.2.0",
     "description": "A powerful desktop application built with Electron",
     "main": "src/main/main.js",
     "author": {
@@ -24,14 +24,11 @@
         "postinstall": "electron-builder install-app-deps",
         "icons": "node scripts/generate-icons.js",
         "lint": "eslint src/**/*.js config/**/*.js scripts/**/*.js",
-        "lint:fix": "eslint src/**/*.js config/**/*.js scripts/**/*.js --fix",
-        "clean": "rm -rf dist build node_modules package-lock.json",
-        "clean:logs": "rm -rf ~/Library/Application\\ Support/myapp/logs"
+        "lint:fix": "eslint src/**/*.js config/**/*.js scripts/**/*.js --fix"
     },
     "build": {
         "appId": "com.mycompany.myapp",
         "productName": "My Application",
-        "executableName": "myapp",
         "artifactName": "${productName}-${version}-${os}-${arch}.${ext}",
         "copyright": "Copyright © 2024 My Company",
         "directories": {
@@ -41,7 +38,10 @@
         "files": [
             "src/**/*",
             "config/**/*",
-            "package.json"
+            "package.json",
+            "!**/*.map",
+            "!**/*.md",
+            "!**/node_modules/**"
         ],
         "extraResources": [
             {
