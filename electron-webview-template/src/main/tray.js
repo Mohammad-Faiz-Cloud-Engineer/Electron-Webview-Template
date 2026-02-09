@@ -85,20 +85,23 @@ function createTray(mainWindow, config) {
         }
 
         // Handle minimize to tray
-        if (config.tray.minimizeToTray && mainWindow) {
-            mainWindow.on('minimize', (event) => {
-                if (!app.isQuitting) {
+        if (config.tray.minimizeToTray && mainWindow && !mainWindow.isDestroyed()) {
+            const handleMinimize = (event) => {
+                if (!app.isQuitting && !mainWindow.isDestroyed()) {
                     event.preventDefault();
                     mainWindow.hide();
                 }
-            });
+            };
 
-            mainWindow.on('close', (event) => {
-                if (!app.isQuitting) {
+            const handleClose = (event) => {
+                if (!app.isQuitting && !mainWindow.isDestroyed()) {
                     event.preventDefault();
                     mainWindow.hide();
                 }
-            });
+            };
+
+            mainWindow.on('minimize', handleMinimize);
+            mainWindow.on('close', handleClose);
         }
 
         return tray;
