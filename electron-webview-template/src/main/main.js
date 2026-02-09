@@ -135,11 +135,15 @@ function createWindow() {
 }
 
 /**
- * Validate URL protocol
+ * Validate URL protocol and format
  * @param {string} url - URL to validate
  * @returns {boolean} True if valid, false otherwise
  */
 function isValidUrl(url) {
+    if (typeof url !== 'string' || url.trim().length === 0) {
+        return false;
+    }
+
     const ALLOWED_PROTOCOLS = ['https:', 'http:', 'file:'];
     try {
         const parsedUrl = new URL(url);
@@ -156,7 +160,10 @@ function loadMainContent() {
     const url = config.urls.main;
 
     if (!isValidUrl(url)) {
-        logger.error('Main', `Invalid URL: ${url}`, { reason: 'Invalid protocol or malformed URL' });
+        logger.error('Main', `Invalid URL configuration: ${url}`, { 
+            reason: 'Invalid protocol or malformed URL',
+            allowedProtocols: ['https:', 'http:', 'file:']
+        });
         loadFallbackPage();
         return;
     }
@@ -168,7 +175,8 @@ function loadMainContent() {
         .catch((error) => {
             logger.error('Main', `Failed to load ${url}`, { 
                 error: error.message,
-                code: error.code 
+                code: error.code,
+                stack: error.stack
             });
             loadFallbackPage();
         });
