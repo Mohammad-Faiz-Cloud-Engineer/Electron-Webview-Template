@@ -155,14 +155,20 @@
      */
     function updateStatus(status, text) {
         const VALID_STATUSES = ['online', 'offline', 'loading'];
+        
+        if (!VALID_STATUSES.includes(status)) {
+            console.warn('[Renderer] Invalid status:', status);
+            return;
+        }
+
         const indicator = document.querySelector('.status-indicator');
         const statusText = document.getElementById('status-text');
 
-        if (indicator && VALID_STATUSES.includes(status)) {
+        if (indicator) {
             indicator.className = `status-indicator ${status}`;
         }
 
-        if (statusText && typeof text === 'string') {
+        if (statusText && typeof text === 'string' && text.trim().length > 0) {
             statusText.textContent = text;
         }
     }
@@ -173,6 +179,11 @@
      * @param {string} type - 'info', 'success', 'warning', or 'error'
      */
     function showNotification(message, type = 'info') {
+        if (typeof message !== 'string' || message.trim().length === 0) {
+            console.warn('[Renderer] Invalid notification message');
+            return;
+        }
+
         const VALID_TYPES = ['info', 'success', 'warning', 'error'];
         const notificationType = VALID_TYPES.includes(type) ? type : 'info';
         
