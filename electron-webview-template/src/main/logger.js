@@ -48,6 +48,7 @@ function initLogger() {
  */
 function rotateOldLogs(logsDir) {
     const MAX_LOG_AGE_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
+    const LOG_FILE_PATTERN = /^app-\d{4}-\d{2}-\d{2}\.log$/;
     
     try {
         const files = fs.readdirSync(logsDir);
@@ -55,6 +56,11 @@ function rotateOldLogs(logsDir) {
         let deletedCount = 0;
 
         files.forEach(file => {
+            // Only process log files matching our pattern
+            if (!LOG_FILE_PATTERN.test(file)) {
+                return;
+            }
+
             try {
                 const filePath = path.join(logsDir, file);
                 const stats = fs.statSync(filePath);
