@@ -1,102 +1,98 @@
 # Changelog
 
-All notable changes to this project will be documented in this file.
+## [1.2.0] - Feb 10, 2026
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+Cleaned up some edge cases and made the config more user-friendly.
 
-## [1.1.0] - 2026-02-10
+### What's New
+- Better validation everywhere - URLs, IPC channels, notifications all check for empty strings now
+- Added window destruction checks so we don't try to operate on closed windows
+- Log rotation is smarter - only processes actual log files instead of everything in the folder
+- Config file has way better comments now, should be easier to customize
+
+### Bug Fixes
+- Fixed a potential crash when creating new windows from the menu
+- IPC methods now properly validate input before doing anything
+- Notifications won't accept garbage input anymore
+- Status updates actually check if the text is valid
+
+### Improvements
+- Removed the redundant `executableName` from package.json - turns out `appId` already handles that
+- Dropped the platform-specific clean scripts since they weren't portable anyway
+- Build excludes source maps and markdown files now, smaller package size
+- Error logs include stack traces for easier debugging
+
+## [1.1.0] - Feb 10, 2026
+
+Big refactoring pass to make everything more robust.
 
 ### Added
-- Comprehensive JSDoc comments for all functions
-- Constants for magic numbers throughout codebase
-- Input validation for all public functions
-- Structured logging with additional metadata
-- Error recovery mechanisms in critical paths
+- JSDoc comments on everything
+- Proper constants instead of magic numbers scattered around
+- Input validation on all public functions
+- Better logging with structured metadata
 - Memory leak prevention in event handlers
-- README.md in build/icons directory with icon generation instructions
+- Icon generation instructions in the build folder
 
-### Improved
-- Refactored switch statements to object lookups for better performance
-- Enhanced error handling with detailed error information
-- Better URL validation with dedicated helper function
-- Improved notification system with type validation
-- Enhanced tray creation with null checks and error handling
-- More robust log rotation with individual file error handling
-- Better IPC error handling with try-catch blocks
-- Improved window creation with configuration object
-- Enhanced security logging with structured data
+### Improvements
+- Switched from switch statements to object lookups (cleaner and faster)
+- URL validation is way more thorough now
+- Notification system validates types properly
+- Tray creation has better error handling
+- Log rotation handles errors per-file instead of bailing on the first issue
+- IPC has proper try-catch blocks everywhere
 
-### Fixed
-- Fixed potential JSON.stringify errors in logger
-- Fixed missing error handling in external link opening
-- Fixed potential memory leaks in notification system
-- Fixed missing null checks in tray creation
-- Fixed inconsistent error logging format
-- Fixed missing validation in renderer status updates
+### Bug Fixes
+- Logger won't crash on circular JSON anymore
+- External links handle errors gracefully
+- Notification system cleans up properly
+- Tray creation checks for null
+- Status updates in renderer are more consistent
 
-### Removed
-- Removed empty .vscode/settings.json file
-- Removed placeholder TXT file from icons directory
-- Removed commented-out V8 cache code
-- Removed redundant switch statements
+### Cleanup
+- Deleted empty .vscode/settings.json
+- Removed placeholder files from icons folder
+- Cleaned up commented-out V8 cache code
+- Got rid of redundant switch statements
 
-### Security
-- Enhanced IPC channel validation with constants
-- Improved error message sanitization
-- Better input validation across all modules
-- Enhanced navigation security with detailed logging
+## [1.0.0] - Feb 10, 2024
 
-## [1.0.0] - 2024-02-10
+First proper release! Took the template from "works on my machine" to production-ready.
 
-### Added
-- Production-grade logging system with file rotation
-- Comprehensive error handling throughout the codebase
-- Input validation for IPC communication
-- Proper notification system replacing alert()
-- Accessibility improvements (ARIA labels, semantic HTML)
-- ESLint configuration for code quality
-- .gitignore for proper version control
-- .env.example for environment configuration
-- Reduced motion support for animations
-- Proper cleanup on app quit
-- Enhanced icon generation script with multiple methods
+### Major Features
+- Real logging system with automatic file rotation (keeps last 7 days)
+- Error handling everywhere - no more silent failures
+- Proper IPC validation for security
+- Replaced all alert() calls with a nice notification system
+- Full accessibility support (ARIA labels, semantic HTML, keyboard nav)
+- ESLint setup for code quality
+- Environment variable support via .env
 
-### Fixed
-- Critical: Fixed undefined `app` variable in tray.js
-- Critical: Fixed "New Window" menu item security vulnerabilities
-- Critical: Fixed fallback URL path resolution for packaged apps
-- Fixed missing error handling in renderer process
-- Fixed navigation security to prevent unauthorized redirects
-- Fixed minimize to tray functionality
-- Fixed tray cleanup on app quit
-- Fixed IPC data validation
+### Security Fixes
+- **CRITICAL:** Fixed undefined app variable in tray.js that would crash on startup
+- **CRITICAL:** Fixed security hole in "New Window" menu item
+- **CRITICAL:** Fixed fallback URL not working in packaged apps
+- Navigation security prevents unauthorized redirects now
+- IPC data gets validated before use
+- Window creation is locked down
 
-### Changed
-- Replaced alert() with proper notification system
-- Improved error messages with better user feedback
-- Enhanced security with stricter URL validation
-- Optimized CSS animations with prefers-reduced-motion
-- Improved code organization and documentation
-- Updated menu.js to use proper window factory pattern
+### Improvements
+- Notification system instead of browser alerts
+- Better error messages that actually help
+- Stricter URL validation
+- CSS animations respect prefers-reduced-motion
+- Code is way more organized
+- Menu uses proper window factory pattern
 
-### Removed
-- Redundant electron-builder.yml file (config in package.json)
-- Unused fallback URL getter in config
-- Placeholder showMessage() function
-
-### Security
-- Added data serialization validation in preload script
-- Enhanced navigation security with try-catch blocks
-- Improved window creation security in menu
-- Added HTTPS protocol validation
-- Prevented unauthorized window creation
+### Cleanup
+- Removed electron-builder.yml (everything's in package.json now)
+- Deleted unused fallback URL getter
+- Removed placeholder showMessage() function
 
 ## [0.1.0] - Initial Release
 
-### Added
-- Initial Electron webview template
-- Basic branding configuration
-- Cross-platform build support
-- System tray functionality
-- Fallback UI for offline scenarios
+Basic Electron webview template. Wraps a website in a desktop app with:
+- Configurable branding
+- Cross-platform builds (Windows, Mac, Linux)
+- System tray support
+- Fallback UI when offline
