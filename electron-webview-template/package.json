@@ -1,0 +1,172 @@
+{
+    "name": "myapp",
+    "productName": "My Application",
+    "version": "1.0.0",
+    "description": "A powerful desktop application built with Electron",
+    "main": "src/main/main.js",
+    "author": {
+        "name": "Mohammad Faiz",
+        "email": "support@mycompany.com",
+        "url": "https://github.com/Mohammad-Faiz-Cloud-Engineer"
+    },
+    "license": "MIT",
+    "private": true,
+    "scripts": {
+        "start": "electron .",
+        "dev": "cross-env NODE_ENV=development electron .",
+        "build": "electron-builder",
+        "build:win": "electron-builder --win",
+        "build:mac": "electron-builder --mac",
+        "build:linux": "electron-builder --linux",
+        "build:all": "electron-builder -mwl",
+        "build:unsigned": "CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder",
+        "pack": "electron-builder --dir",
+        "postinstall": "electron-builder install-app-deps",
+        "icons": "node scripts/generate-icons.js",
+        "lint": "eslint src/**/*.js config/**/*.js scripts/**/*.js",
+        "lint:fix": "eslint src/**/*.js config/**/*.js scripts/**/*.js --fix",
+        "clean": "rm -rf dist build node_modules package-lock.json",
+        "clean:logs": "rm -rf ~/Library/Application\\ Support/myapp/logs"
+    },
+    "build": {
+        "appId": "com.mycompany.myapp",
+        "productName": "My Application",
+        "executableName": "myapp",
+        "artifactName": "${productName}-${version}-${os}-${arch}.${ext}",
+        "copyright": "Copyright © 2024 My Company",
+        "directories": {
+            "buildResources": "build",
+            "output": "dist"
+        },
+        "files": [
+            "src/**/*",
+            "config/**/*",
+            "package.json"
+        ],
+        "extraResources": [
+            {
+                "from": "build/icons",
+                "to": "icons"
+            }
+        ],
+        "mac": {
+            "category": "public.app-category.productivity",
+            "icon": "build/icons/icon.icns",
+            "target": [
+                {
+                    "target": "dmg",
+                    "arch": [
+                        "x64",
+                        "arm64"
+                    ]
+                },
+                {
+                    "target": "zip",
+                    "arch": [
+                        "x64",
+                        "arm64"
+                    ]
+                }
+            ],
+            "hardenedRuntime": true,
+            "gatekeeperAssess": false,
+            "entitlements": "build/entitlements.mac.plist",
+            "entitlementsInherit": "build/entitlements.mac.plist",
+            "notarize": false
+        },
+        "dmg": {
+            "contents": [
+                {
+                    "x": 130,
+                    "y": 220
+                },
+                {
+                    "x": 410,
+                    "y": 220,
+                    "type": "link",
+                    "path": "/Applications"
+                }
+            ],
+            "window": {
+                "width": 540,
+                "height": 380
+            }
+        },
+        "win": {
+            "icon": "build/icons/icon.ico",
+            "target": [
+                {
+                    "target": "nsis",
+                    "arch": [
+                        "x64",
+                        "ia32"
+                    ]
+                },
+                {
+                    "target": "portable",
+                    "arch": [
+                        "x64"
+                    ]
+                }
+            ],
+            "signingHashAlgorithms": [
+                "sha256"
+            ],
+            "rfc3161TimeStampServer": "http://timestamp.digicert.com"
+        },
+        "nsis": {
+            "oneClick": false,
+            "perMachine": false,
+            "allowToChangeInstallationDirectory": true,
+            "allowElevation": true,
+            "createDesktopShortcut": true,
+            "createStartMenuShortcut": true,
+            "shortcutName": "My Application",
+            "uninstallDisplayName": "My Application",
+            "installerIcon": "build/icons/icon.ico",
+            "uninstallerIcon": "build/icons/icon.ico",
+            "installerHeaderIcon": "build/icons/icon.ico"
+        },
+        "linux": {
+            "icon": "build/icons/png",
+            "category": "Utility",
+            "target": [
+                {
+                    "target": "AppImage",
+                    "arch": [
+                        "x64"
+                    ]
+                },
+                {
+                    "target": "deb",
+                    "arch": [
+                        "x64"
+                    ]
+                },
+                {
+                    "target": "rpm",
+                    "arch": [
+                        "x64"
+                    ]
+                }
+            ],
+            "desktop": {
+                "Name": "My Application",
+                "Comment": "A powerful desktop application built with Electron",
+                "StartupNotify": "true"
+            }
+        },
+        "appImage": {
+            "artifactName": "${productName}-${version}-${arch}.${ext}"
+        }
+    },
+    "devDependencies": {
+        "cross-env": "^7.0.3",
+        "electron": "^40.2.1",
+        "electron-builder": "^26.7.0",
+        "eslint": "^8.56.0"
+    },
+    "optionalDependencies": {
+        "sharp": "^0.33.0"
+    }
+}
