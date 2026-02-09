@@ -22,6 +22,11 @@ function createNewWindow() {
         }
 
         const sourceWindow = windows[0];
+        if (sourceWindow.isDestroyed()) {
+            logger.error('Menu', 'Source window is destroyed');
+            return;
+        }
+
         const bounds = sourceWindow.getBounds();
         const WINDOW_OFFSET = 50;
         
