@@ -94,7 +94,12 @@ contextBridge.exposeInMainWorld('appAPI', {
     send: (channel, data) => {
         const VALID_SEND_CHANNELS = ['app:minimize', 'app:maximize', 'app:close', 'app:reload'];
         
-        if (typeof channel !== 'string' || !VALID_SEND_CHANNELS.includes(channel)) {
+        if (typeof channel !== 'string' || channel.trim().length === 0) {
+            console.warn('[Preload] Invalid channel type or empty channel');
+            return;
+        }
+
+        if (!VALID_SEND_CHANNELS.includes(channel)) {
             console.warn(`[Preload] Blocked send to invalid channel: ${channel}`);
             return;
         }
@@ -122,7 +127,12 @@ contextBridge.exposeInMainWorld('appAPI', {
     invoke: async (channel, data) => {
         const VALID_INVOKE_CHANNELS = ['app:getVersion', 'app:getPath', 'dialog:open', 'dialog:save'];
         
-        if (typeof channel !== 'string' || !VALID_INVOKE_CHANNELS.includes(channel)) {
+        if (typeof channel !== 'string' || channel.trim().length === 0) {
+            console.warn('[Preload] Invalid channel type or empty channel');
+            return null;
+        }
+
+        if (!VALID_INVOKE_CHANNELS.includes(channel)) {
             console.warn(`[Preload] Blocked invoke to invalid channel: ${channel}`);
             return null;
         }
